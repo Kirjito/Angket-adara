@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angket Mobil Bernafas Dua Adara</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;font-size:14px;background:#f5f5f0;color:#222;padding:0}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+h1{font-size:18px;font-weight:bold;text-align:center;letter-spacing:.5px;margin-bottom:4px}
+.sub{text-align:center;font-size:12px;color:#666;margin-bottom:16px;font-style:italic}
+.card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin-bottom:14px}
+.card-title{font-weight:bold;font-size:13px;margin-bottom:10px;color:#333;border-bottom:1px solid #eee;padding-bottom:6px}
+.form-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.form-row label{min-width:140px;font-size:13px;color:#444}
+.form-row input[type=text]{flex:1;border:none;border-bottom:1px solid #aaa;padding:4px 2px;font-size:13px;background:transparent;outline:none}
+.form-row input[type=text]:focus{border-bottom-color:#333}
+.trans-btns{display:flex;gap:10px;justify-content:center;margin:10px 0}
+.trans-btn{padding:10px 32px;border:2px solid #888;border-radius:6px;background:#fff;font-size:14px;font-weight:bold;cursor:pointer;transition:all .2s;color:#333}
+.trans-btn:hover{background:#f0f0f0}
+.trans-btn.active{background:#1a5276;color:#fff;border-color:#1a5276}
+.q-block{margin-bottom:12px}
+.q-label{font-weight:bold;font-size:13px;margin-bottom:6px;color:#1a5276}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt-row{display:flex;align-items:flex-start;gap:8px;padding:5px 8px;border-radius:5px;cursor:pointer;transition:background .15s}
+.opt-row:hover{background:#f0f5fb}
+.opt-row input[type=radio]{margin-top:2px;accent-color:#1a5276;cursor:pointer}
+.opt-row label{font-size:13px;line-height:1.4;cursor:pointer;color:#333}
+.opt-row.selected{background:#e8f0f8}
+.bbm-sub{font-size:12px;font-weight:bold;color:#555;margin:8px 0 4px 0;text-transform:uppercase;letter-spacing:.3px}
+.bbm-hidden{display:none}
+textarea{width:100%;border:1px solid #ccc;border-radius:5px;padding:8px;font-size:13px;resize:vertical;min-height:80px;font-family:Arial,sans-serif}
+.btn-submit{display:block;width:100%;padding:12px;background:#1a5276;color:#fff;border:none;border-radius:6px;font-size:15px;font-weight:bold;cursor:pointer;margin-top:8px;transition:background .2s}
+.btn-submit:hover{background:#154360}
+.btn-secondary{display:inline-block;padding:8px 18px;background:#eee;color:#333;border:1px solid #ccc;border-radius:5px;font-size:13px;cursor:pointer;margin-right:8px;transition:background .15s}
+.btn-secondary:hover{background:#ddd}
+.btn-danger{background:#c0392b;color:#fff;border-color:#c0392b}
+.btn-danger:hover{background:#a93226}
+
+/* HASIL */
+#hasilSection{display:none}
+.hasil-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin-bottom:14px}
+.hasil-title{font-weight:bold;font-size:15px;color:#1a5276;margin-bottom:10px;border-bottom:2px solid #1a5276;padding-bottom:6px}
+.skor-wrap{display:flex;align-items:center;gap:16px;margin:10px 0}
+.skor-num{font-size:36px;font-weight:bold;color:#1a5276}
+.skor-bar-wrap{flex:1}
+.skor-bar-bg{background:#e0e0e0;border-radius:10px;height:14px;overflow:hidden}
+.skor-bar{height:14px;border-radius:10px;transition:width .5s}
+.skor-label{font-size:13px;color:#555;margin-top:4px}
+.kategori-badge{display:inline-block;padding:4px 14px;border-radius:12px;font-weight:bold;font-size:13px;margin-top:4px}
+.k-baik{background:#d5f5e3;color:#1e8449}
+.k-sedang{background:#fdebd0;color:#a04000}
+.k-kurang{background:#fadbd8;color:#922b21}
+.detail-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.detail-table th{background:#f0f4f8;padding:6px 8px;text-align:left;border:1px solid #ddd;font-weight:bold;color:#333}
+.detail-table td{padding:5px 8px;border:1px solid #eee}
+.detail-table tr:nth-child(even){background:#fafafa}
+.jawaban-chip{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px}
+.j-1{background:#fadbd8;color:#922b21}
+.j-2{background:#fdebd0;color:#a04000}
+.j-3{background:#d5f5e3;color:#1e8449}
+
+/* REKAP */
+#rekapSection{display:none}
+.rekap-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.rekap-num-card{background:#f0f4f8;border-radius:6px;padding:12px;text-align:center}
+.rekap-num{font-size:28px;font-weight:bold;color:#1a5276}
+.rekap-num-lbl{font-size:11px;color:#666;margin-top:2px}
+.persen-bar-wrap{margin-bottom:8px}
+.persen-lbl{display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px;color:#444}
+.persen-bar-bg{background:#e0e0e0;border-radius:6px;height:10px;overflow:hidden}
+.persen-bar-fill{height:10px;border-radius:6px}
+.p-baik{background:#2ecc71}
+.p-sedang{background:#e67e22}
+.p-kurang{background:#e74c3c}
+.responden-list{list-style:none;padding:0}
+.responden-item{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-bottom:1px solid #eee;font-size:13px}
+.responden-item:hover{background:#f5f5f5}
+.lihat-btn{font-size:12px;color:#1a5276;cursor:pointer;text-decoration:underline}
+
+.nav-tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid #1a5276}
+.nav-tab{padding:8px 20px;cursor:pointer;font-size:13px;font-weight:bold;color:#666;border-radius:6px 6px 0 0;transition:all .15s}
+.nav-tab.active{background:#1a5276;color:#fff}
+.nav-tab:hover:not(.active){background:#e8f0f8;color:#1a5276}
+
+.top-bar{background:#1a5276;color:#fff;padding:12px 16px;text-align:center}
+.top-bar h1{color:#fff;font-size:16px}
+.top-bar .sub{color:#b3d0e8;margin-bottom:0}
+
+.step-indicator{display:flex;justify-content:center;align-items:center;gap:6px;margin:10px 0}
+.step{width:10px;height:10px;border-radius:50%;background:#ccc}
+.step.active{background:#1a5276;width:14px;height:14px}
+.step.done{background:#2ecc71}
+
+.warning{background:#fef9e7;border:1px solid #f9ca24;border-radius:6px;padding:10px;font-size:13px;color:#6d4c41;margin-bottom:10px}
+.success-msg{background:#d5f5e3;border:1px solid #82e0aa;border-radius:6px;padding:10px;font-size:13px;color:#1e8449;margin-bottom:10px;display:none}
+
+@media(max-width:480px){
+.rekap-grid{grid-template-columns:1fr 1fr}
+.form-row{flex-direction:column;align-items:flex-start}
+.form-row label{min-width:auto}
+.form-row input[type=text]{width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>ANGKET MOBIL BERNAFAS DUA ADARA</h1>
+  <div class="sub">Formulir Evaluasi Digital — Bisa diisi di HP maupun Komputer</div>
+</div>
+
+<div class="wrap">
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showTab('isi')">📝 Isi Angket</div>
+    <div class="nav-tab" onclick="showTab('rekap')">📊 Rekap & Analisis</div>
+  </div>
+
+  <!-- TAB ISI ANGKET -->
+  <div id="tabIsi">
+    <div id="formSection">
+      <!-- IDENTITAS -->
+      <div class="card">
+        <div class="card-title">IDENTITAS PENGISI</div>
+        <div class="form-row"><label>Nama</label><input type="text" id="nama" placeholder="Tulis nama lengkap"></div>
+        <div class="form-row"><label>Alamat</label><input type="text" id="alamat" placeholder="Kota / Desa"></div>
+        <div class="form-row"><label>No. HP</label><input type="text" id="hp" placeholder="Nomor HP aktif"></div>
+        <div class="form-row"><label>Jenis Kelamin</label>
+          <label style="min-width:auto;display:flex;gap:4px;align-items:center"><input type="radio" name="jk" value="L"> Laki-laki</label>
+          <label style="min-width:auto;display:flex;gap:4px;align-items:center;margin-left:12px"><input type="radio" name="jk" value="P"> Perempuan</label>
+        </div>
+        <div class="form-row"><label>Umur</label><input type="text" id="umur" placeholder="Tahun"></div>
+      </div>
+
+      <!-- DATA KENDARAAN -->
+      <div class="card">
+        <div class="card-title">DATA KENDARAAN</div>
+        <div class="form-row"><label>Merek / Nama</label><input type="text" id="merek" placeholder="Contoh: Daihatsu Charade"></div>
+        <div class="form-row"><label>Tahun Pembuatan</label><input type="text" id="tahun" placeholder="Contoh: 1985"></div>
+        <div class="form-row"><label>Kapasitas Mesin (CC)</label><input type="text" id="cc" placeholder="Contoh: 1000"></div>
+        <div class="form-row"><label>Jenis BBM</label>
+          <label style="min-width:auto;display:flex;gap:4px;align-items:center"><input type="radio" name="bbmjenis" value="solar" onchange="updateBBM()"> Solar</label>
+          <label style="min-width:auto;display:flex;gap:4px;align-items:center;margin-left:10px"><input type="radio" name="bbmjenis" value="premium" onchange="updateBBM()"> Premium</label>
+          <label style="min-width:auto;display:flex;gap:4px;align-items:center;margin-left:10px"><input type="radio" name="bbmjenis" value="pertalite" onchange="updateBBM()"> Pertalite</label>
+          <label style="min-width:auto;display:flex;gap:4px;align-items:center;margin-left:10px"><input type="radio" name="bbmjenis" value="pertamax" onchange="updateBBM()"> Pertamax</label>
+        </div>
+
+        <div style="margin-top:10px">
+          <div class="q-label" style="font-size:13px">Jenis Transmisi</div>
+          <div class="trans-btns">
+            <button class="trans-btn" id="btnManual" onclick="pilihTransmisi('manual')">⚙️ Manual</button>
+            <button class="trans-btn" id="btnOtomatis" onclick="pilihTransmisi('otomatis')">🔄 Otomatis (AT)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERTANYAAN -->
+      <div class="card" id="pertanyaanSection" style="display:none">
+        <div class="card-title">KONDISI KENDARAAN <span id="transLabel" style="font-weight:normal;color:#666;font-size:12px"></span></div>
+
+        <!-- Q1: Kondisi Mesin -->
+        <div class="q-block">
+          <div class="q-label">1. Kondisi Mesin Saat Hidup</div>
+          <div class="opts">
+            <div class="opt-row" onclick="pilih(this,'q1','1')"><input type="radio" name="q1" value="1"><label>Kurang bagus — mesin berat / tidak stabil</label></div>
+            <div class="opt-row" onclick="pilih(this,'q1','2')"><input type="radio" name="q1" value="2"><label>Sedang — cukup normal</label></div>
+            <div class="opt-row" onclick="pilih(this,'q1','3')"><input type="radio" name="q1" value="3"><label>Bagus — mesin stabil dan ringan</label></div>
+          </div>
+        </div>
+
+        <!-- Q2: Kondisi Knalpot -->
+        <div class="q-block">
+          <div class="q-label">2. Kondisi Knalpot Saat Pemanasan</div>
+          <div class="opts">
+            <div class="opt-row" onclick="pilih(this,'q2','1')"><input type="radio" name="q2" value="1"><label>Tidak keluar air sama sekali</label></div>
+            <div class="opt-row" onclick="pilih(this,'q2','2')"><input type="radio" name="q2" value="2"><label>Lembab saja — sedikit uap</label></div>
+            <div class="opt-row" onclick="pilih(this,'q2','3')"><input type="radio" name="q2" value="3"><label>Keluar air — uap atau tetesan terlihat jelas</label></div>
+          </div>
+        </div>
+
+        <!-- Q3: Getaran -->
+        <div class="q-block">
+          <div class="q-label">3. Getaran Mesin</div>
+          <div class="opts">
+            <div class="opt-row" onclick="pilih(this,'q3','1')"><input type="radio" name="q3" value="1"><label>Kasar — getaran terasa kuat</label></div>
+            <div class="opt-row" onclick="pilih(this,'q3','2')"><input type="radio" name="q3" value="2"><label>Sedang — getaran normal</label></div>
+            <div class="opt-row" onclick="pilih(this,'q3','3')"><input type="radio" name="q3" value="3"><label>Halus — hampir tidak terasa getaran</label></div>
+          </div>
+        </div>
+
+        <!-- Q4: Bau Knalpot -->
+        <div class="q-block">
+          <div class="q-label">4. Bau dan Warna Asap Knalpot</div>
+          <div class="opts">
+            <div class="opt-row" onclick="pilih(this,'q4','1')"><input type="radio" name="q4" value="1"><label>Sangat menyengat, asap kehitaman</label></div>
+            <div class="opt-row" onclick="pilih(this,'q4','2')"><input type="radio" name="q4" value="2"><label>Agak menyengat, asap agak putih</label></div>
+            <div class="opt-row" onclick="pilih(this,'q4','3')"><input type="radio" name="q4" value="3"><label>Tidak menyengat, tidak berasap</label></div>
+          </div>
+        </div>
+
+        <!-- Q5: Transmisi (berubah sesuai pilihan) -->
+        <div class="q-block" id="qTransmisi">
+          <div class="q-label" id="qTransLabel">5. Perpindahan Persneling</div>
+          <div class="opts" id="qTransOpts">
+            <!-- diisi JS -->
+          </div>
+        </div>
+
+        <!-- Q6: Akselerasi -->
+        <div class="q-block">
+          <div class="q-label">6. Akselerasi</div>
+          <div class="opts">
+            <div class="opt-row" onclick="pilih(this,'q6','1')"><input type="radio" name="q6" value="1"><label>Lambat — mesin berat saat digas</label></div>
+            <div class="opt-row" onclick="pilih(this,'q6','2')"><input type="radio" name="q6" value="2"><label>Sedang — respons normal</label></div>
+            <div class="opt-row" onclick="pilih(this,'q6','3')"><input type="radio" name="q6" value="3"><label>Spontan — mesin langsung merespons ringan</label></div>
+          </div>
+        </div>
+
+        <!-- Q7: Suara -->
+        <div class="q-block">
+          <div class="q-label">7. Suara Mesin</div>
+          <div class="opts">
+            <div class="opt-row" onclick="pilih(this,'q7','1')"><input type="radio" name="q7" value="1"><label>Keras — terdengar kasar / bising</label></div>
+            <div class="opt-row" onclick="pilih(this,'q7','2')"><input type="radio" name="q7" value="2"><label>Sedang — suara normal</label></div>
+            <div class="opt-row" onclick="pilih(this,'q7','3')"><input type="radio" name="q7" value="3"><label>Lembut — suara halus, hampir tidak kasar</label></div>
+          </div>
+        </div>
+
+        <!-- Q8: BBM -->
+        <div class="q-block">
+          <div class="q-label">8. Konsumsi Bahan Bakar</div>
+          <div id="bbmSolar" class="bbm-hidden">
+            <div class="bbm-sub">Solar</div>
+            <div class="opts">
+              <div class="opt-row" onclick="pilih(this,'q8','1')"><input type="radio" name="q8" value="1"><label>Boros — 1 liter maks. 10 km</label></div>
+              <div class="opt-row" onclick="pilih(this,'q8','2')"><input type="radio" name="q8" value="2"><label>Sedang — 1 liter lebih dari 10 km</label></div>
+              <div class="opt-row" onclick="pilih(this,'q8','3')"><input type="radio" name="q8" value="3"><label>Hemat — 1 liter lebih dari 15 km</label></div>
+            </div>
+          </div>
+          <div id="bbmPremium" class="bbm-hidden">
+            <div class="bbm-sub">Bensin Premium / Pertalite</div>
+            <div class="opts">
+              <div class="opt-row" onclick="pilih(this,'q8','1')"><input type="radio" name="q8" value="1"><label>Boros — 1 liter di bawah 10 km</label></div>
+              <div class="opt-row" onclick="pilih(this,'q8','2')"><input type="radio" name="q8" value="2"><label>Sedang — 1 liter di atas 10 km</label></div>
+              <div class="opt-row" onclick="pilih(this,'q8','3')"><input type="radio" name="q8" value="3"><label>Hemat — 1 liter di atas 15 km</label></div>
+            </div>
+          </div>
+          <div id="bbmPertamax" class="bbm-hidden">
+            <div class="bbm-sub">Bensin Pertamax</div>
+            <div class="opts">
+              <div class="opt-row" onclick="pilih(this,'q8','1')"><input type="radio" name="q8" value="1"><label>Boros — 1 liter di bawah 10 km</label></div>
+              <div class="opt-row" onclick="pilih(this,'q8','2')"><input type="radio" name="q8" value="2"><label>Sedang — 1 liter antara 10–15 km</label></div>
+              <div class="opt-row" onclick="pilih(this,'q8','3')"><input type="radio" name="q8" value="3"><label>Hemat — 1 liter di atas 15 km</label></div>
+            </div>
+          </div>
+          <div id="bbmPilih" style="font-size:12px;color:#999;padding:6px 0">⬆ Pilih jenis BBM di bagian Data Kendaraan terlebih dahulu</div>
+        </div>
+
+        <!-- Q9: Penumpang -->
+        <div class="q-block">
+          <div class="q-label">9. Perasaan Penumpang Selama Perjalanan</div>
+          <div class="opts">
+            <div class="opt-row" onclick="pilih(this,'q9','1')"><input type="radio" name="q9" value="1"><label>Tidak merasakan perbedaan getaran sama sekali</label></div>
+            <div class="opt-row" onclick="pilih(this,'q9','2')"><input type="radio" name="q9" value="2"><label>Merasakan ada perubahan — getaran sedikit berkurang</label></div>
+            <div class="opt-row" onclick="pilih(this,'q9','3')"><input type="radio" name="q9" value="3"><label>Merasakan perbedaan yang jelas — getaran halus dan nyaman</label></div>
+          </div>
+        </div>
+
+        <!-- Komentar -->
+        <div class="q-block">
+          <div class="q-label">10. Komentar / Analisis Pengguna</div>
+          <textarea id="komentar" placeholder="Tuliskan kesan, perubahan, atau catatan lain setelah menggunakan Mobil Bernafas Dua Adara..."></textarea>
+        </div>
+
+        <div id="warnMsg" class="warning" style="display:none">⚠️ Mohon isi semua pertanyaan sebelum menyimpan.</div>
+        <div id="successMsg" class="success-msg">✅ Jawaban berhasil disimpan!</div>
+        <button class="btn-submit" onclick="simpan()">💾 Simpan Jawaban</button>
+      </div>
+    </div>
+
+    <!-- HASIL INDIVIDU -->
+    <div id="hasilSection">
+      <div class="hasil-card">
+        <div class="hasil-title">📋 HASIL ANALISIS — <span id="hasilNama"></span></div>
+        <div class="skor-wrap">
+          <div class="skor-num" id="hasilSkorNum">0</div>
+          <div class="skor-bar-wrap">
+            <div class="skor-bar-bg"><div class="skor-bar" id="hasilSkorBar" style="width:0%;background:#1a5276"></div></div>
+            <div class="skor-lbl">Skor total: <span id="hasilSkorOf"></span></div>
+          </div>
+          <div><span class="kategori-badge" id="hasilKategori"></span></div>
+        </div>
+        <table class="detail-table" id="hasilTable"></table>
+        <div style="margin-top:10px;font-size:13px;color:#444" id="hasilKomentar"></div>
+        <div style="margin-top:12px">
+          <button class="btn-secondary" onclick="isiLagi()">📝 Isi Angket Lagi</button>
+          <button class="btn-secondary" onclick="showTab('rekap')">📊 Lihat Rekap</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB REKAP -->
+  <div id="tabRekap" style="display:none">
+    <div class="hasil-card">
+      <div class="hasil-title">📊 REKAP & ANALISIS KESELURUHAN</div>
+      <div id="rekapKosong" style="text-align:center;color:#999;padding:20px;font-size:14px">Belum ada data. Isi angket terlebih dahulu.</div>
+      <div id="rekapIsi" style="display:none">
+        <div class="rekap-grid" id="rekapGrid"></div>
+        <div style="margin-bottom:12px">
+          <div style="font-weight:bold;font-size:13px;margin-bottom:8px;color:#333">Distribusi Kategori</div>
+          <div id="rekapDistrib"></div>
+        </div>
+        <div style="margin-bottom:12px">
+          <div style="font-weight:bold;font-size:13px;margin-bottom:8px;color:#333">Analisis Per Pertanyaan (% jawaban terbaik)</div>
+          <div id="rekapPerQ"></div>
+        </div>
+        <div>
+          <div style="font-weight:bold;font-size:13px;margin-bottom:8px;color:#333">Daftar Responden</div>
+          <ul class="responden-list" id="rekapList"></ul>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-secondary" onclick="eksporCSV()">⬇ Ekspor CSV</button>
+          <button class="btn-secondary btn-danger" onclick="hapusSemua()">🗑 Hapus Semua Data</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var transmisi = '';
+var qLabels = ['Kondisi Mesin','Knalpot Pemanasan','Getaran Mesin','Bau/Asap Knalpot','Transmisi','Akselerasi','Suara Mesin','Konsumsi BBM','Perasaan Penumpang'];
+var qOpts = {
+  q1:['Kurang bagus','Sedang','Bagus'],
+  q2:['Tidak keluar air','Lembab saja','Keluar air'],
+  q3:['Kasar','Sedang','Halus'],
+  q4:['Sangat menyengat','Agak menyengat','Tidak menyengat'],
+  q5_manual:['Nyendat/Kasar','Sedang','Halus dan lancar'],
+  q5_otomatis:['Lambat berpindah/tersentak','Sedang','Perpindahan halus & responsif'],
+  q6:['Lambat','Sedang','Spontan'],
+  q7:['Keras','Sedang','Lembut'],
+  q8:['Boros','Sedang','Hemat'],
+  q9:['Tidak ada perbedaan','Ada perubahan sedang','Perbedaan jelas/nyaman']
+};
+
+function showTab(t){
+  document.getElementById('tabIsi').style.display = t==='isi'?'block':'none';
+  document.getElementById('tabRekap').style.display = t==='rekap'?'block':'none';
+  document.querySelectorAll('.nav-tab').forEach((el,i)=>el.classList.toggle('active',(t==='isi'&&i===0)||(t==='rekap'&&i===1)));
+  if(t==='rekap') renderRekap();
+}
+
+function pilihTransmisi(t){
+  transmisi = t;
+  document.getElementById('btnManual').classList.toggle('active', t==='manual');
+  document.getElementById('btnOtomatis').classList.toggle('active', t==='otomatis');
+  document.getElementById('pertanyaanSection').style.display = 'block';
+  document.getElementById('transLabel').textContent = '— Transmisi ' + (t==='manual'?'Manual':'Otomatis (AT)');
+  var lbl = document.getElementById('qTransLabel');
+  var opts = document.getElementById('qTransOpts');
+  if(t==='manual'){
+    lbl.textContent = '5. Perpindahan Persneling';
+    opts.innerHTML = mkOpts('q5',['Nyendat / kasar — terasa hentakan saat pindah gigi','Sedang — sedikit hentakan','Halus dan lancar — tidak terasa hentakan']);
+  } else {
+    lbl.textContent = '5. Perpindahan Mode / Respons AT';
+    opts.innerHTML = mkOpts('q5',['Lambat / tersentak saat berpindah D–R–P','Sedang — perpindahan cukup mulus','Halus dan responsif — berpindah tanpa terasa']);
+  }
+  document.getElementById('pertanyaanSection').scrollIntoView({behavior:'smooth'});
+}
+
+function mkOpts(name, arr){
+  return arr.map(function(o,i){
+    return '<div class="opt-row" onclick="pilih(this,\''+name+'\',\''+(i+1)+'\')"><input type="radio" name="'+name+'" value="'+(i+1)+'"><label>'+o+'</label></div>';
+  }).join('');
+}
+
+function pilih(row, name, val){
+  document.querySelectorAll('.opt-row').forEach(function(r){
+    if(r.querySelector('input[name="'+name+'"]')) r.classList.remove('selected');
+  });
+  row.classList.add('selected');
+  row.querySelector('input').checked = true;
+}
+
+function updateBBM(){
+  var v = document.querySelector('input[name="bbmjenis"]:checked');
+  if(!v) return;
+  document.getElementById('bbmPilih').style.display='none';
+  document.getElementById('bbmSolar').classList.remove('bbm-hidden');
+  document.getElementById('bbmPremium').classList.remove('bbm-hidden');
+  document.getElementById('bbmPertamax').classList.remove('bbm-hidden');
+  ['bbmSolar','bbmPremium','bbmPertamax'].forEach(function(id){
+    document.getElementById(id).classList.add('bbm-hidden');
+  });
+  if(v.value==='solar') document.getElementById('bbmSolar').classList.remove('bbm-hidden');
+  else if(v.value==='pertamax') document.getElementById('bbmPertamax').classList.remove('bbm-hidden');
+  else document.getElementById('bbmPremium').classList.remove('bbm-hidden');
+  var q8rows = document.querySelectorAll('#bbmSolar .opt-row, #bbmPremium .opt-row, #bbmPertamax .opt-row');
+  q8rows.forEach(function(r){r.classList.remove('selected')});
+}
+
+function getVal(name){
+  var el = document.querySelector('input[name="'+name+'"]:checked');
+  return el ? el.value : null;
+}
+
+function simpan(){
+  if(!transmisi){alert('Pilih jenis transmisi terlebih dahulu!');return;}
+  var fields = ['q1','q2','q3','q4','q5','q6','q7','q8','q9'];
+  var missing = fields.filter(function(f){return !getVal(f);});
+  var nama = document.getElementById('nama').value.trim();
+  if(!nama){alert('Nama pengisi wajib diisi!');return;}
+  if(missing.length>0){
+    document.getElementById('warnMsg').style.display='block';
+    document.querySelector('.q-block').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  document.getElementById('warnMsg').style.display='none';
+
+  var data = {
+    id: Date.now(),
+    tgl: new Date().toLocaleDateString('id-ID'),
+    nama: nama,
+    alamat: document.getElementById('alamat').value,
+    hp: document.getElementById('hp').value,
+    jk: getVal('jk')||'-',
+    umur: document.getElementById('umur').value,
+    merek: document.getElementById('merek').value,
+    tahun: document.getElementById('tahun').value,
+    cc: document.getElementById('cc').value,
+    bbm: (document.querySelector('input[name="bbmjenis"]:checked')||{value:'-'}).value,
+    transmisi: transmisi,
+    jawaban: {}
+  };
+  fields.forEach(function(f){data.jawaban[f]=parseInt(getVal(f));});
+  data.komentar = document.getElementById('komentar').value;
+  data.skor = fields.reduce(function(a,f){return a+data.jawaban[f];},0);
+
+  var all = getAll();
+  all.push(data);
+  localStorage.setItem('angket_adara', JSON.stringify(all));
+
+  tampilHasil(data);
+}
+
+function getAll(){
+  try{return JSON.parse(localStorage.getItem('angket_adara'))||[];}catch(e){return [];}
+}
+
+function kategori(skor){
+  if(skor>=22) return {label:'Baik',cls:'k-baik',warna:'#2ecc71'};
+  if(skor>=15) return {label:'Sedang',cls:'k-sedang',warna:'#e67e22'};
+  return {label:'Perlu Perhatian',cls:'k-kurang',warna:'#e74c3c'};
+}
+
+function tampilHasil(d){
+  document.getElementById('formSection').style.display='none';
+  document.getElementById('hasilSection').style.display='block';
+  document.getElementById('hasilNama').textContent = d.nama;
+  document.getElementById('hasilSkorNum').textContent = d.skor;
+  document.getElementById('hasilSkorOf').textContent = d.skor + ' / 27';
+  var pct = Math.round(d.skor/27*100);
+  document.getElementById('hasilSkorBar').style.width = pct+'%';
+  var k = kategori(d.skor);
+  document.getElementById('hasilSkorBar').style.background = k.warna;
+  var badge = document.getElementById('hasilKategori');
+  badge.textContent = k.label;
+  badge.className = 'kategori-badge '+k.cls;
+
+  var qs = ['q1','q2','q3','q4','q5','q6','q7','q8','q9'];
+  var rows = qs.map(function(q,i){
+    var v = d.jawaban[q];
+    var optsKey = (q==='q5') ? 'q5_'+d.transmisi : q;
+    var optsArr = qOpts[optsKey]||qOpts[q]||['-','-','-'];
+    var chipClass = v===1?'j-1':v===2?'j-2':'j-3';
+    return '<tr><td>'+(i+1)+'. '+qLabels[i]+'</td><td><span class="jawaban-chip '+chipClass+'">'+optsArr[v-1]+'</span></td></tr>';
+  }).join('');
+  document.getElementById('hasilTable').innerHTML = '<thead><tr><th>Aspek</th><th>Jawaban</th></tr></thead><tbody>'+rows+'</tbody>';
+  if(d.komentar) document.getElementById('hasilKomentar').innerHTML = '<b>Komentar:</b> '+d.komentar;
+}
+
+function isiLagi(){
+  document.getElementById('formSection').style.display='block';
+  document.getElementById('hasilSection').style.display='none';
+  document.getElementById('pertanyaanSection').style.display='none';
+  transmisi='';
+  document.getElementById('btnManual').classList.remove('active');
+  document.getElementById('btnOtomatis').classList.remove('active');
+  ['nama','alamat','hp','umur','merek','tahun','cc','komentar'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  document.querySelectorAll('input[type=radio]').forEach(function(r){r.checked=false;});
+  document.querySelectorAll('.opt-row').forEach(function(r){r.classList.remove('selected');});
+  ['bbmSolar','bbmPremium','bbmPertamax'].forEach(function(id){document.getElementById(id).classList.add('bbm-hidden');});
+  document.getElementById('bbmPilih').style.display='block';
+  document.getElementById('warnMsg').style.display='none';
+  window.scrollTo(0,0);
+}
+
+function renderRekap(){
+  var all = getAll();
+  if(all.length===0){
+    document.getElementById('rekapKosong').style.display='block';
+    document.getElementById('rekapIsi').style.display='none';
+    return;
+  }
+  document.getElementById('rekapKosong').style.display='none';
+  document.getElementById('rekapIsi').style.display='block';
+
+  var total = all.length;
+  var avgSkor = Math.round(all.reduce(function(a,d){return a+d.skor;},0)/total);
+  var baik = all.filter(function(d){return d.skor>=22;}).length;
+  var sedang = all.filter(function(d){return d.skor>=15&&d.skor<22;}).length;
+  var kurang = all.filter(function(d){return d.skor<15;}).length;
+
+  document.getElementById('rekapGrid').innerHTML =
+    mkNumCard(total,'Total Responden') +
+    mkNumCard(avgSkor,'Rata-rata Skor') +
+    mkNumCard(Math.round(baik/total*100)+'%','Kategori Baik');
+
+  var pb = Math.round(baik/total*100), ps = Math.round(sedang/total*100), pk = Math.round(kurang/total*100);
+  document.getElementById('rekapDistrib').innerHTML =
+    mkBar('Baik (skor 22–27)', pb, 'p-baik') +
+    mkBar('Sedang (skor 15–21)', ps, 'p-sedang') +
+    mkBar('Perlu Perhatian (skor ≤14)', pk, 'p-kurang');
+
+  var qs = ['q1','q2','q3','q4','q5','q6','q7','q8','q9'];
+  var perQHtml = qs.map(function(q,i){
+    var terbaik = all.filter(function(d){return d.jawaban[q]===3;}).length;
+    var pct = Math.round(terbaik/total*100);
+    return mkBar((i+1)+'. '+qLabels[i]+' — terbaik', pct, pct>=70?'p-baik':pct>=40?'p-sedang':'p-kurang');
+  }).join('');
+  document.getElementById('rekapPerQ').innerHTML = perQHtml;
+
+  var listHtml = all.map(function(d,i){
+    var k = kategori(d.skor);
+    return '<li class="responden-item"><span>'+(i+1)+'. '+d.nama+' <span style="color:#999;font-size:12px">('+d.transmisi+', '+d.merek+')</span></span>'+
+      '<span><span class="kategori-badge '+k.cls+'" style="font-size:11px;padding:2px 8px">'+k.label+' ('+d.skor+')</span> '+
+      '<span class="lihat-btn" onclick="lihatDetail('+i+')">Detail</span></span></li>';
+  }).join('');
+  document.getElementById('rekapList').innerHTML = listHtml;
+}
+
+function mkNumCard(val,lbl){
+  return '<div class="rekap-num-card"><div class="rekap-num">'+val+'</div><div class="rekap-num-lbl">'+lbl+'</div></div>';
+}
+
+function mkBar(lbl,pct,cls){
+  return '<div class="persen-bar-wrap">'+
+    '<div class="persen-lbl"><span>'+lbl+'</span><span>'+pct+'%</span></div>'+
+    '<div class="persen-bar-bg"><div class="persen-bar-fill '+cls+'" style="width:'+pct+'%"></div></div></div>';
+}
+
+function lihatDetail(idx){
+  var all = getAll();
+  tampilHasil(all[idx]);
+  showTab('isi');
+  document.getElementById('formSection').style.display='none';
+  document.getElementById('hasilSection').style.display='block';
+}
+
+function hapusSemua(){
+  if(confirm('Yakin hapus semua data responden? Tidak bisa dibatalkan.')){
+    localStorage.removeItem('angket_adara');
+    renderRekap();
+  }
+}
+
+function eksporCSV(){
+  var all = getAll();
+  if(all.length===0){alert('Tidak ada data!');return;}
+  var header = 'No,Tanggal,Nama,Alamat,HP,JK,Umur,Merek,Tahun,CC,BBM,Transmisi,q1,q2,q3,q4,q5,q6,q7,q8,q9,Skor,Kategori,Komentar';
+  var rows = all.map(function(d,i){
+    var k=kategori(d.skor);
+    return [i+1,d.tgl,d.nama,d.alamat,d.hp,d.jk,d.umur,d.merek,d.tahun,d.cc,d.bbm,d.transmisi,
+      d.jawaban.q1,d.jawaban.q2,d.jawaban.q3,d.jawaban.q4,d.jawaban.q5,d.jawaban.q6,d.jawaban.q7,d.jawaban.q8,d.jawaban.q9,
+      d.skor,k.label,'"'+d.komentar.replace(/"/g,'""')+'"'].join(',');
+  });
+  var csv = header+'\n'+rows.join('\n');
+  var blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href=url; a.download='angket_adara_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+</script>
+</body>
+</html>
