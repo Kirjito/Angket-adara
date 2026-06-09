@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angket Mencintai Jagad Cilik</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --biru: #1a4a7a;
+    --biru-mid: #2e6da4;
+    --biru-light: #e8f2fb;
+    --hijau: #1a6b3a;
+    --hijau-light: #e8f5ee;
+    --emas: #c8922a;
+    --emas-light: #fdf3e3;
+    --abu: #f4f6f8;
+    --teks: #1e2633;
+    --teks-muted: #5a6475;
+    --border: #d0dae6;
+    --white: #ffffff;
+    --radius: 12px;
+    --shadow: 0 2px 16px rgba(26,74,122,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(160deg, #e8f2fb 0%, #f4f6f8 40%, #e8f5ee 100%);
+    min-height: 100vh;
+    color: var(--teks);
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--biru);
+    color: white;
+    padding: 32px 24px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .header-icon { font-size: 2.4rem; margin-bottom: 8px; }
+  .header h1 {
+    font-family: 'Lora', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 0.88rem;
+    opacity: 0.82;
+    line-height: 1.5;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: white;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--biru-mid), var(--hijau));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-size: 0.78rem;
+    color: var(--teks-muted);
+    margin-top: 5px;
+    text-align: right;
+  }
+
+  /* CONTAINER */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 16px; }
+
+  /* SECTION CARD */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header.biru { background: var(--biru); color: white; }
+  .card-header.biru-light { background: var(--biru-light); color: var(--biru); border-bottom: 1px solid var(--border); }
+  .card-header.hijau { background: var(--hijau); color: white; }
+  .card-header.hijau-light { background: var(--hijau-light); color: var(--hijau); border-bottom: 1px solid var(--border); }
+  .card-header.emas { background: var(--emas-light); color: var(--emas); border-bottom: 1px solid #e8d5b0; }
+  .card-body { padding: 20px; }
+
+  /* FORM ELEMENTS */
+  label.field-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--teks-muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  input[type=text], input[type=number], select, textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background: var(--abu);
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--biru-mid);
+    background: white;
+  }
+  textarea { resize: vertical; min-height: 72px; }
+  .field { margin-bottom: 16px; }
+
+  /* RADIO / CHECKBOX CUSTOM */
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  .option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--abu);
+  }
+  .option-item:hover { border-color: var(--biru-mid); background: var(--biru-light); }
+  .option-item.selected-biru { border-color: var(--biru-mid); background: var(--biru-light); }
+  .option-item.selected-hijau { border-color: var(--hijau); background: var(--hijau-light); }
+  .option-item input[type=radio], .option-item input[type=checkbox] { display: none; }
+  .option-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .selected-biru .option-dot { border-color: var(--biru-mid); background: var(--biru-mid); }
+  .selected-biru .option-dot::after { content: ''; width: 8px; height: 8px; background: white; border-radius: 50%; }
+  .selected-hijau .option-dot { border-color: var(--hijau); background: var(--hijau); }
+  .selected-hijau .option-dot::after { content: ''; width: 8px; height: 8px; background: white; border-radius: 50%; }
+  .option-check {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .selected-biru .option-check { border-color: var(--biru-mid); background: var(--biru-mid); }
+  .selected-biru .option-check::after { content: '✓'; color: white; font-size: 13px; font-weight: bold; }
+  .selected-hijau .option-check { border-color: var(--hijau); background: var(--hijau); }
+  .selected-hijau .option-check::after { content: '✓'; color: white; font-size: 13px; font-weight: bold; }
+  .option-text { font-size: 0.92rem; line-height: 1.45; flex: 1; }
+  .option-sub { font-size: 0.80rem; color: var(--teks-muted); margin-top: 3px; }
+
+  /* SKOR BOX */
+  .skor-box {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--biru-light);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 6px;
+  }
+  .skor-box label { font-size: 0.88rem; color: var(--teks-muted); flex: 1; }
+  .skor-box input { width: 80px; text-align: center; font-weight: 700; font-size: 1.1rem; }
+
+  /* IONIZER SECTION */
+  .ionizer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+  @media (max-width: 400px) { .ionizer-grid { grid-template-columns: 1fr; } }
+
+  /* NOTE BOX */
+  .note-box {
+    background: var(--emas-light);
+    border-left: 4px solid var(--emas);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 0.87rem;
+    color: #6b4c1a;
+    font-style: italic;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* TOMBOL */
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-align: center;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-biru { background: var(--biru); color: white; box-shadow: 0 4px 14px rgba(26,74,122,0.3); }
+  .btn-biru:hover { box-shadow: 0 6px 20px rgba(26,74,122,0.4); }
+  .btn-wa { background: #25d366; color: white; box-shadow: 0 4px 14px rgba(37,211,102,0.35); }
+  .btn-wa:hover { box-shadow: 0 6px 20px rgba(37,211,102,0.45); }
+  .btn-outline { background: white; color: var(--biru); border: 2px solid var(--biru); }
+  .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+  /* HASIL */
+  #hasil-section { display: none; }
+  .hasil-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  .skor-display {
+    text-align: center;
+    padding: 28px 20px 20px;
+  }
+  .skor-angka {
+    font-family: 'Lora', serif;
+    font-size: 3.8rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--biru), var(--hijau));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .skor-label { font-size: 0.85rem; color: var(--teks-muted); margin-top: 4px; }
+  .kondisi-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 99px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 10px 0 4px;
+  }
+  .kondisi-keterangan { font-size: 0.88rem; color: var(--teks-muted); padding: 0 20px 20px; text-align: center; }
+
+  .rekap-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--abu);
+    font-size: 0.9rem;
+  }
+  .rekap-item:last-child { border-bottom: none; }
+  .rekap-label { color: var(--teks-muted); }
+  .rekap-val { font-weight: 600; color: var(--teks); }
+
+  /* STATISTIK KOMUNITAS */
+  .stat-bar-wrap { padding: 0 20px 20px; }
+  .stat-row { margin-bottom: 14px; }
+  .stat-row-label { display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px; }
+  .stat-bar { height: 10px; background: var(--abu); border-radius: 99px; overflow: hidden; }
+  .stat-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--biru-mid), var(--hijau)); transition: width 1s ease; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px 20px 16px;
+    font-size: 0.8rem;
+    color: var(--teks-muted);
+    font-style: italic;
+  }
+
+  /* Animasi masuk */
+  .card { animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">💧</div>
+  <h1>Mencintai Jagad Cilik</h1>
+  <p>Angket Kualitas Kesehatan & Pengalaman Banyu Setrum<br>Komunitas Kandhaung Udan · V. Kirjito · 2026</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Belum dimulai</div>
+</div>
+
+<div class="container">
+
+  <!-- ── IDENTITAS ── -->
+  <div class="card" style="animation-delay:0.05s">
+    <div class="card-header biru">👤 &nbsp;Identitas</div>
+    <div class="card-body">
+      <div class="note-box">Semua data bersifat pribadi. Nama hanya digunakan untuk keperluan rekap komunitas Kandhaung Udan.</div>
+      <div class="field"><label class="field-label">Nama Lengkap *</label>
+        <input type="text" id="nama" placeholder="Tulis nama Anda..."></div>
+      <div class="field"><label class="field-label">Umur *</label>
+        <input type="number" id="umur" placeholder="Contoh: 45" min="5" max="100"></div>
+      <div class="field"><label class="field-label">Pekerjaan / Profesi</label>
+        <input type="text" id="pekerjaan" placeholder="Contoh: Guru, Petani, Ibu Rumah Tangga..."></div>
+      <div class="field"><label class="field-label">Kota / Daerah</label>
+        <input type="text" id="kota" placeholder="Contoh: Muntilan, Semarang..."></div>
+    </div>
+  </div>
+
+  <!-- ── PENGALAMAN IONIZER ── -->
+  <div class="card" style="animation-delay:0.10s">
+    <div class="card-header biru-light">⚡ &nbsp;Pengalaman Menggunakan Ionizer Banyu Setrum</div>
+    <div class="card-body">
+
+      <div class="field"><label class="field-label">Sejak kapan mulai menggunakan?</label>
+        <select id="sejak">
+          <option value="">— Pilih —</option>
+          <option value="2014-2016">2014 – 2016</option>
+          <option value="2017-2019">2017 – 2019</option>
+          <option value="2020-2021">2020 – 2021</option>
+          <option value="2022-2023">2022 – 2023</option>
+          <option value="2024-2025">2024 – 2025</option>
+          <option value="2026">2026 (baru mulai)</option>
+        </select>
+      </div>
+
+      <div class="field"><label class="field-label">Jenis ionizer yang digunakan</label>
+        <div class="options" id="jenis-ionizer">
+          <label class="option-item" onclick="selectOption(this,'jenis-ionizer','single','biru')">
+            <input type="radio" name="jenis_ionizer" value="buatan_romo">
+            <div class="option-dot"></div>
+            <div class="option-text">Buatan Romo Kirjito (ionizer komunitas)</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'jenis-ionizer','single','biru')">
+            <input type="radio" name="jenis_ionizer" value="buatan_sendiri">
+            <div class="option-dot"></div>
+            <div class="option-text">Buatan sendiri / rakitan mandiri</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'jenis-ionizer','single','biru')">
+            <input type="radio" name="jenis_ionizer" value="beli">
+            <div class="option-dot"></div>
+            <div class="option-text">Beli / produk komersial</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'jenis-ionizer','single','biru')">
+            <input type="radio" name="jenis_ionizer" value="komunitas">
+            <div class="option-dot"></div>
+            <div class="option-text">Pakai bersama / ionizer komunitas</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="field"><label class="field-label">Versi ionizer yang pernah digunakan</label>
+        <div class="options" id="versi-ionizer">
+          <label class="option-item" onclick="selectOption(this,'versi-ionizer','multi','biru')">
+            <input type="checkbox" name="versi" value="lama_2014">
+            <div class="option-check"></div>
+            <div class="option-text">Versi lama (sebelum 2022)</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'versi-ionizer','multi','biru')">
+            <input type="checkbox" name="versi" value="baru_2022">
+            <div class="option-check"></div>
+            <div class="option-text">Versi baru (2022 – 2026)</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'versi-ionizer','multi','biru')">
+            <input type="checkbox" name="versi" value="keduanya">
+            <div class="option-check"></div>
+            <div class="option-text">Pernah menggunakan keduanya</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="field"><label class="field-label">Seberapa rutin minum banyu setrum?</label>
+        <div class="options" id="rutin-minum">
+          <label class="option-item" onclick="selectOption(this,'rutin-minum','single','biru')">
+            <input type="radio" name="rutin" value="rutin_setiap_hari">
+            <div class="option-dot"></div>
+            <div class="option-text">Rutin setiap hari</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'rutin-minum','single','biru')">
+            <input type="radio" name="rutin" value="kadang">
+            <div class="option-dot"></div>
+            <div class="option-text">Kadang-kadang (tidak setiap hari)</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'rutin-minum','single','biru')">
+            <input type="radio" name="rutin" value="pernah_berhenti">
+            <div class="option-dot"></div>
+            <div class="option-text">Pernah berhenti, lalu mulai lagi</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="field"><label class="field-label">Alasan pernah berhenti (jika ada)</label>
+        <div class="options" id="alasan-berhenti">
+          <label class="option-item" onclick="selectOption(this,'alasan-berhenti','multi','biru')">
+            <input type="checkbox" name="alasan" value="alat_rusak">
+            <div class="option-check"></div>
+            <div class="option-text">Alat rusak / perlu perbaikan</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'alasan-berhenti','multi','biru')">
+            <input type="checkbox" name="alasan" value="malas_bersihkan">
+            <div class="option-check"></div>
+            <div class="option-text">Malas membersihkan alat</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'alasan-berhenti','multi','biru')">
+            <input type="checkbox" name="alasan" value="lupa">
+            <div class="option-check"></div>
+            <div class="option-text">Lupa / tidak sempat</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'alasan-berhenti','multi','biru')">
+            <input type="checkbox" name="alasan" value="tidak_ada">
+            <div class="option-check"></div>
+            <div class="option-text">Tidak pernah berhenti</div>
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SURVEI CAIRAN TUBUH ── -->
+  <div class="card" style="animation-delay:0.15s">
+    <div class="card-header biru">💧 &nbsp;Survei Kualitas Cairan Tubuh</div>
+    <div class="card-body">
+      <div class="note-box">Untuk setiap item, pilih yang paling menggambarkan kondisi Anda saat ini. Amati dengan jujur menggunakan panca indra sendiri.</div>
+
+      <p style="font-size:0.82rem;color:var(--teks-muted);margin-bottom:16px;">
+        ⭐ = kondisi kurang &nbsp;|&nbsp; ⭐⭐ = cukup &nbsp;|&nbsp; ⭐⭐⭐ = bagus
+      </p>
+
+      <div id="survei-container"></div>
+
+      <div class="divider"></div>
+      <div class="skor-box">
+        <label>Skor otomatis (dihitung dari pilihan di atas)</label>
+        <div style="font-weight:700;font-size:1.4rem;color:var(--biru)" id="skor-live">0 %</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KONDISI KESEHATAN ── -->
+  <div class="card" style="animation-delay:0.18s">
+    <div class="card-header hijau">🏥 &nbsp;Kondisi Kesehatan Saat Ini</div>
+    <div class="card-body">
+      <div class="field"><label class="field-label">Kondisi umum</label>
+        <div class="options" id="kondisi-kes">
+          <label class="option-item" onclick="selectOption(this,'kondisi-kes','single','hijau')">
+            <input type="radio" name="kondisi_kes" value="sering_sakit">
+            <div class="option-dot"></div>
+            <div class="option-text">Sering sakit, perlu berobat ke dokter
+              <div class="option-sub">Rutin konsumsi obat, cukup ketergantungan</div></div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'kondisi-kes','single','hijau')">
+            <input type="radio" name="kondisi_kes" value="kadang_sakit">
+            <div class="option-dot"></div>
+            <div class="option-text">Kadang-kadang sakit, cukup minum obat / herbal
+              <div class="option-sub">Tidak terlalu sering ke dokter</div></div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'kondisi-kes','single','hijau')">
+            <input type="radio" name="kondisi_kes" value="jarang_sakit">
+            <div class="option-dot"></div>
+            <div class="option-text">Jarang sakit, tubuh pulih sendiri
+              <div class="option-sub">Hampir tidak pernah minum obat</div></div>
+          </label>
+        </div>
+      </div>
+      <div class="field"><label class="field-label">Jenis keluhan yang sering dialami (jika ada)</label>
+        <textarea id="jenis-keluhan" placeholder="Contoh: sering flu, sakit kepala, pegal..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STAMINA & KONSENTRASI ── -->
+  <div class="card" style="animation-delay:0.20s">
+    <div class="card-header hijau-light">💪 &nbsp;Stamina & Konsentrasi</div>
+    <div class="card-body">
+      <div class="field"><label class="field-label">Stamina sehari-hari</label>
+        <div class="options" id="stamina">
+          <label class="option-item" onclick="selectOption(this,'stamina','single','hijau')">
+            <input type="radio" name="stamina" value="rendah">
+            <div class="option-dot"></div>
+            <div class="option-text">Rendah — mudah lelah, butuh suplemen</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'stamina','single','hijau')">
+            <input type="radio" name="stamina" value="sedang">
+            <div class="option-dot"></div>
+            <div class="option-text">Sedang — cukup stabil, kadang lelah</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'stamina','single','hijau')">
+            <input type="radio" name="stamina" value="bagus">
+            <div class="option-dot"></div>
+            <div class="option-text">Bagus — bertenaga sepanjang hari</div>
+          </label>
+        </div>
+      </div>
+      <div class="field" style="margin-top:16px"><label class="field-label">Daya Konsentrasi</label>
+        <div class="options" id="konsentrasi">
+          <label class="option-item" onclick="selectOption(this,'konsentrasi','single','hijau')">
+            <input type="radio" name="konsentrasi" value="kurang">
+            <div class="option-dot"></div>
+            <div class="option-text">Kurang — sulit fokus, mudah lupa</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'konsentrasi','single','hijau')">
+            <input type="radio" name="konsentrasi" value="sedang">
+            <div class="option-dot"></div>
+            <div class="option-text">Sedang — bisa fokus, tapi cepat lelah</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'konsentrasi','single','hijau')">
+            <input type="radio" name="konsentrasi" value="bagus">
+            <div class="option-dot"></div>
+            <div class="option-text">Bagus — jernih, daya ingat kuat</div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PERKEMBANGAN SETELAH BANYU SETRUM ── -->
+  <div class="card" style="animation-delay:0.22s">
+    <div class="card-header hijau">🌱 &nbsp;Perkembangan Setelah Minum Banyu Setrum</div>
+    <div class="card-body">
+      <div class="field"><label class="field-label">Perbaikan kesehatan yang dirasakan</label>
+        <div class="options" id="perbaikan-kes">
+          <label class="option-item" onclick="selectOption(this,'perbaikan-kes','single','hijau')">
+            <input type="radio" name="perbaikan_kes" value="tidak_ada">
+            <div class="option-dot"></div>
+            <div class="option-text">Belum ada perbaikan yang terasa</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'perbaikan-kes','single','hijau')">
+            <input type="radio" name="perbaikan_kes" value="sedang">
+            <div class="option-dot"></div>
+            <div class="option-text">Ada perbaikan sedang</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'perbaikan-kes','single','hijau')">
+            <input type="radio" name="perbaikan_kes" value="bagus">
+            <div class="option-dot"></div>
+            <div class="option-text">Perbaikan bagus dan jelas terasa</div>
+          </label>
+        </div>
+      </div>
+      <div class="field"><label class="field-label">Ceritakan singkat perkembangan yang paling terasa</label>
+        <textarea id="cerita-perkembangan" placeholder="Contoh: tidur lebih nyenyak, badan lebih segar pagi hari, jarang sakit..."></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field"><label class="field-label">Perkembangan stamina</label>
+        <div class="options" id="perk-stamina">
+          <label class="option-item" onclick="selectOption(this,'perk-stamina','single','hijau')">
+            <input type="radio" name="perk_stamina" value="tidak_ada">
+            <div class="option-dot"></div><div class="option-text">Tidak ada perubahan</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'perk-stamina','single','hijau')">
+            <input type="radio" name="perk_stamina" value="sedang">
+            <div class="option-dot"></div><div class="option-text">Ada perbaikan sedang</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'perk-stamina','single','hijau')">
+            <input type="radio" name="perk_stamina" value="bagus">
+            <div class="option-dot"></div><div class="option-text">Perbaikan bagus dan jelas</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:16px"><label class="field-label">Perkembangan daya konsentrasi</label>
+        <div class="options" id="perk-konsentrasi">
+          <label class="option-item" onclick="selectOption(this,'perk-konsentrasi','single','hijau')">
+            <input type="radio" name="perk_konsentrasi" value="tidak_ada">
+            <div class="option-dot"></div><div class="option-text">Tidak ada perubahan</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'perk-konsentrasi','single','hijau')">
+            <input type="radio" name="perk_konsentrasi" value="sedang">
+            <div class="option-dot"></div><div class="option-text">Ada perkembangan sedang</div>
+          </label>
+          <label class="option-item" onclick="selectOption(this,'perk-konsentrasi','single','hijau')">
+            <input type="radio" name="perk_konsentrasi" value="bagus">
+            <div class="option-dot"></div><div class="option-text">Perkembangan bagus dan jelas</div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KESAN UMUM ── -->
+  <div class="card" style="animation-delay:0.24s">
+    <div class="card-header emas">✍️ &nbsp;Kesan Umum</div>
+    <div class="card-body">
+      <div class="field"><label class="field-label">Apa yang paling kamu syukuri dari menggunakan banyu setrum?</label>
+        <textarea id="kesan" placeholder="Ceritakan dengan bebas..."></textarea>
+      </div>
+      <div class="field"><label class="field-label">Saran atau masukan untuk pengembangan ionizer</label>
+        <textarea id="saran" placeholder="Saran, ide, atau harapan..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOMBOL KIRIM ── -->
+  <div class="btn-group">
+    <button class="btn btn-biru" onclick="lihatHasil()">📊 Lihat Hasil Saya</button>
+    <button class="btn btn-wa" onclick="kirimWA()">📲 Kirim ke WhatsApp Romo Kirjito</button>
+  </div>
+
+  <!-- ── HASIL PRIBADI ── -->
+  <div id="hasil-section">
+    <div class="hasil-card">
+      <div class="card-header biru">📊 Hasil Survei Anda</div>
+      <div class="skor-display">
+        <div class="skor-angka" id="hasil-persen">0%</div>
+        <div class="skor-label">Skor Kualitas Cairan Tubuh</div>
+        <div class="kondisi-badge" id="kondisi-badge">—</div>
+      </div>
+      <div class="kondisi-keterangan" id="kondisi-ket"></div>
+      <div class="divider" style="margin:0 20px"></div>
+      <div id="rekap-list"></div>
+    </div>
+
+    <!-- STATISTIK KOMUNITAS -->
+    <div class="hasil-card">
+      <div class="card-header hijau">🌐 Statistik Komunitas (semua responden)</div>
+      <div class="card-body">
+        <p style="font-size:0.84rem;color:var(--teks-muted);margin-bottom:16px;">
+          Data dirangkum dari semua yang mengisi angket ini di perangkat ini. Tidak ada nama yang ditampilkan.</p>
+        <div class="stat-bar-wrap" id="stat-komunitas">
+          <p style="font-size:0.84rem;color:var(--teks-muted);font-style:italic">Belum ada data komunitas. Data muncul setelah beberapa orang mengisi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  Angket ini bagian dari program "Mencintai Jagad Cilik" — V. Kirjito · Muntilan 2026<br>
+  Kolaborasi dengan AI Claude (Anthropic) · Komunitas Kandhaung Udan
+</div>
+
+<script>
+// ── DATA SURVEI ──────────────────────────────────────────────────
+const surveiItems = [
+  { id:'s1', label:'Minum air putih', desc:'Apakah rutin minum ±8 gelas/hari?',
+    op:['Tidak rutin minum air putih','Kadang-kadang minum air putih','Rutin minum ±8 gelas/hari'] },
+  { id:'s2', label:'Urin', desc:'Warna, bau, dan kelancaran',
+    op:['Bau pesing, kuning keruh, tidak lancar','Sedikit pesing, kuning jernih, agak berbusa','Tidak berbau, jernih/bening, lancar'] },
+  { id:'s3', label:'Feses', desc:'Rutinitas, bau, dan bentuk',
+    op:['Tidak rutin, bau sangat menyengat','Rutin harian, bau wajar, lembek','Lancar/rutin, tidak bau, berbentuk, terapung'] },
+  { id:'s4', label:'Keringat', desc:'Bau badan dan kondisi pakaian',
+    op:['Bau badan sangat mengganggu','Berbau wajar, kadang pakai pewangi','Tidak berbau, pakaian bersih'] },
+  { id:'s5', label:'Bau mulut', desc:'Terutama saat bangun pagi',
+    op:['Sangat bau, bahkan siang hari','Kadang berbau saat lelah saja','Mulut segar, tidak ada keluhan'] },
+  { id:'s6', label:'Buang angin', desc:'Bau dan frekuensi',
+    op:['Sangat bau busuk, tidak wajar','Berbau sedang, kadang mengganggu','Tidak bau busuk, frekuensi wajar'] },
+  { id:'s7', label:'Kuku kaki', desc:'Bentuk, pertumbuhan, bau kaos kaki',
+    op:['Bergelombang, keras, kaos kaki cepat bau','Cukup baik, kaos kaki agak bau','Rata, halus, tidak bau, tumbuh cepat'] },
+  { id:'s8', label:'Rambut', desc:'Kerontokan dan ketombe',
+    op:['Mudah rontok, ketombe banyak, gatal','Rontok sedikit, ketombe wajar','Tidak rontok, bebas ketombe, tumbuh cepat'] },
+  { id:'s9', label:'Tidur', desc:'Kualitas dan kedalaman tidur',
+    op:['Sulit tidur, sering terbangun, mimpi buruk','Bisa tidur, kadang terbangun','Cepat tertidur, nyenyak, pulas'] },
+  { id:'s10', label:'Bangun tidur', desc:'Kondisi tubuh saat bangun',
+    op:['Kesiangan, lelah, tidak semangat','Kadang terlambat, butuh waktu','Tepat waktu, segar, langsung bersemangat'] },
+  { id:'s11', label:'Kondisi kesehatan', desc:'Frekuensi sakit',
+    op:['Sakit-sakitan, rutin berobat','Kadang sakit, pulih dengan herbal/istirahat','Sangat jarang sakit, stabil'] },
+  { id:'s12', label:'Pemulihan', desc:'Kemampuan tubuh memulihkan diri',
+    op:['Keluhan kumat terus, ketergantungan obat','Diatasi tradisional: pijat, jamu, kerokan','Tubuh cepat pulih sendiri'] },
+  { id:'s13', label:'Stamina', desc:'Energi sepanjang hari',
+    op:['Mudah lesu, cepat lelah, pegal-pegal','Semangat di awal, cepat lelah','Bertenaga sepanjang hari, produktif'] },
+  { id:'s14', label:'Konsentrasi', desc:'Fokus dan daya ingat',
+    op:['Sulit fokus, mudah lupa, gampang jengkel','Bisa konsentrasi tapi cepat buyar','Jernih, daya ingat kuat, gembira'] },
+];
+
+const kondisiMap = [
+  { min:0,  max:39,  label:'Sakit',         color:'#e74c3c', bg:'#fdecea', ket:'Tubuh perlu perhatian serius. Mulai rutin minum air berkualitas.' },
+  { min:40, max:59,  label:'Kurang Sehat',   color:'#e67e22', bg:'#fef3e2', ket:'Banyak keluhan fisik. Banyu setrum bisa membantu membersihkan sisa metabolisme.' },
+  { min:60, max:79,  label:'Cukup Sehat',    color:'#f1c40f', bg:'#fffde7', ket:'Kondisi cukup baik, masih ada ruang perbaikan. Terus rutin minum.' },
+  { min:80, max:89,  label:'Sehat',          color:'#27ae60', bg:'#e8f5e9', ket:'Tubuh dalam kondisi baik. Pertahankan kebiasaan baik ini.' },
+  { min:90, max:95,  label:'Sehat Optimal',  color:'#16a085', bg:'#e0f2f1', ket:'Hampir tanpa keluhan. Tubuh bekerja dengan sangat baik.' },
+  { min:96, max:100, label:'Sangat Sehat',   color:'#1a4a7a', bg:'#e8f2fb', ket:'Kreatif, produktif, gembira, dan bahagia. Jagad Cilik terawat dengan baik! 🙏' },
+];
+
+let skorSurvei = {};
+
+// ── BUILD SURVEI ─────────────────────────────────────────────────
+function buildSurvei() {
+  const cont = document.getElementById('survei-container');
+  surveiItems.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'field';
+    div.innerHTML = `
+      <label class="field-label">${item.id.replace('s','').replace(/^/,'')} ${item.label}</label>
+      <p style="font-size:0.80rem;color:var(--teks-muted);margin-bottom:6px">${item.desc}</p>
+      <div class="options" id="grp-${item.id}">
+        ${item.op.map((o,i) => `
+        <label class="option-item" onclick="selectSurvei(this,'${item.id}',${i+1})">
+          <input type="radio" name="${item.id}" value="${i+1}">
+          <div class="option-dot"></div>
+          <div class="option-text">${'⭐'.repeat(i+1)} &nbsp;${o}</div>
+        </label>`).join('')}
+      </div>`;
+    cont.appendChild(div);
+  });
+}
+
+function selectSurvei(el, id, val) {
+  const grp = document.getElementById('grp-' + id);
+  grp.querySelectorAll('.option-item').forEach(i => {
+    i.classList.remove('selected-biru','selected-hijau');
+  });
+  el.classList.add('selected-biru');
+  el.querySelector('input').checked = true;
+  skorSurvei[id] = val;
+  hitungSkorLive();
+  updateProgress();
+}
+
+function hitungSkorLive() {
+  const vals = Object.values(skorSurvei);
+  if (!vals.length) { document.getElementById('skor-live').textContent = '0 %'; return; }
+  const total = vals.reduce((a,b)=>a+b,0);
+  const pct = Math.round(total / 42 * 100);
+  document.getElementById('skor-live').textContent = pct + ' %';
+  return pct;
+}
+
+// ── OPTION SELECT ────────────────────────────────────────────────
+function selectOption(el, grpId, type, color) {
+  const grp = document.getElementById(grpId);
+  const cls = 'selected-' + color;
+  if (type === 'single') {
+    grp.querySelectorAll('.option-item').forEach(i => i.classList.remove(cls));
+    el.classList.add(cls);
+    el.querySelector('input').checked = true;
+  } else {
+    el.classList.toggle(cls);
+    el.querySelector('input').checked = el.classList.contains(cls);
+  }
+  updateProgress();
+}
+
+// ── PROGRESS ─────────────────────────────────────────────────────
+function updateProgress() {
+  const total = 14 + 7; // 14 survei + 7 bagian lain
+  let done = Object.keys(skorSurvei).length;
+  if (document.getElementById('nama').value) done++;
+  if (document.getElementById('umur').value) done++;
+  ['jenis-ionizer','rutin-minum','kondisi-kes','stamina','konsentrasi'].forEach(id => {
+    if (document.querySelector(`#${id} .option-item.selected-biru, #${id} .option-item.selected-hijau`)) done++;
+  });
+  const pct = Math.min(Math.round(done / total * 100), 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct === 100 ? 'Angket lengkap ✓' : `${pct}% selesai`;
+}
+
+document.getElementById('nama').addEventListener('input', updateProgress);
+document.getElementById('umur').addEventListener('input', updateProgress);
+
+// ── LIHAT HASIL ──────────────────────────────────────────────────
+function lihatHasil() {
+  const vals = Object.values(skorSurvei);
+  const total = vals.length ? vals.reduce((a,b)=>a+b,0) : 0;
+  const pct = vals.length ? Math.round(total / 42 * 100) : 0;
+
+  const k = kondisiMap.find(k => pct >= k.min && pct <= k.max) || kondisiMap[0];
+
+  document.getElementById('hasil-persen').textContent = pct + '%';
+  const badge = document.getElementById('kondisi-badge');
+  badge.textContent = k.label;
+  badge.style.background = k.bg;
+  badge.style.color = k.color;
+  document.getElementById('kondisi-ket').textContent = k.ket;
+
+  // Rekap
+  const rl = document.getElementById('rekap-list');
+  const nama = document.getElementById('nama').value || '—';
+  const umur = document.getElementById('umur').value || '—';
+  const pekerjaan = document.getElementById('pekerjaan').value || '—';
+  rl.innerHTML = [
+    ['Nama', nama], ['Umur', umur + ' tahun'], ['Pekerjaan', pekerjaan],
+    ['Skor survei', pct + '%'], ['Kondisi', k.label],
+    ['Item diisi', vals.length + ' dari 14'],
+  ].map(([l,v]) => `<div class="rekap-item"><span class="rekap-label">${l}</span><span class="rekap-val">${v}</span></div>`).join('');
+
+  // Simpan ke localStorage-free: pakai sessionStorage via variable
+  simpanKomunitas(pct);
+
+  document.getElementById('hasil-section').style.display = 'block';
+  setTimeout(() => document.getElementById('hasil-section').scrollIntoView({behavior:'smooth'}), 100);
+}
+
+// ── DATA KOMUNITAS (in-memory, tidak persisten) ──────────────────
+let komunitas = [];
+function simpanKomunitas(pct) {
+  komunitas.push(pct);
+  renderStatKomunitas();
+}
+
+function renderStatKomunitas() {
+  const cont = document.getElementById('stat-komunitas');
+  if (komunitas.length < 1) return;
+  const avg = Math.round(komunitas.reduce((a,b)=>a+b,0)/komunitas.length);
+  const dist = kondisiMap.map(k => ({
+    label: k.label,
+    color: k.color,
+    pct: Math.round(komunitas.filter(v=>v>=k.min&&v<=k.max).length/komunitas.length*100)
+  }));
+  cont.innerHTML = `
+    <div style="font-size:0.84rem;color:var(--teks-muted);margin-bottom:12px">
+      Total responden sesi ini: <strong>${komunitas.length}</strong> &nbsp;|&nbsp; Rata-rata skor: <strong>${avg}%</strong>
+    </div>
+    ${dist.filter(d=>d.pct>0).map(d=>`
+    <div class="stat-row">
+      <div class="stat-row-label">
+        <span>${d.label}</span><span style="color:${d.color};font-weight:600">${d.pct}%</span>
+      </div>
+      <div class="stat-bar"><div class="stat-fill" style="width:${d.pct}%;background:${d.color}"></div></div>
+    </div>`).join('')}
+    <p style="font-size:0.76rem;color:var(--teks-muted);margin-top:8px;font-style:italic">
+      * Statistik hanya berlaku selama sesi ini. Untuk rekap permanen, kirim data ke WhatsApp Romo Kirjito.
+    </p>`;
+}
+
+// ── KIRIM WA ─────────────────────────────────────────────────────
+function kirimWA() {
+  const nama = document.getElementById('nama').value || '(tidak diisi)';
+  const umur = document.getElementById('umur').value || '—';
+  const pekerjaan = document.getElementById('pekerjaan').value || '—';
+  const kota = document.getElementById('kota').value || '—';
+  const sejak = document.getElementById('sejak').value || '—';
+  const rutin = getSelected('rutin-minum') || '—';
+  const kondisiKes = getSelected('kondisi-kes') || '—';
+  const stamina = getSelected('stamina') || '—';
+  const konsentrasi = getSelected('konsentrasi') || '—';
+  const perbaikan = getSelected('perbaikan-kes') || '—';
+  const perkStamina = getSelected('perk-stamina') || '—';
+  const perkKons = getSelected('perk-konsentrasi') || '—';
+  const cerita = document.getElementById('cerita-perkembangan').value || '—';
+  const kesan = document.getElementById('kesan').value || '—';
+  const saran = document.getElementById('saran').value || '—';
+
+  const vals = Object.values(skorSurvei);
+  const total = vals.length ? vals.reduce((a,b)=>a+b,0) : 0;
+  const pct = vals.length ? Math.round(total / 42 * 100) : 0;
+  const k = kondisiMap.find(k => pct >= k.min && pct <= k.max) || kondisiMap[0];
+
+  const tgl = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+
+  const msg = `💧 *ANGKET MENCINTAI JAGAD CILIK*
+Komunitas Kandhaung Udan · ${tgl}
+
+👤 *IDENTITAS*
+Nama: ${nama}
+Umur: ${umur} tahun
+Pekerjaan: ${pekerjaan}
+Kota: ${kota}
+
+⚡ *IONIZER*
+Menggunakan sejak: ${sejak}
+Frekuensi minum: ${rutin}
+
+📊 *SURVEI CAIRAN TUBUH*
+Skor: *${pct}%* — ${k.label}
+(${vals.length} dari 14 item diisi)
+
+🏥 *KONDISI & PERKEMBANGAN*
+Kesehatan: ${kondisiKes}
+Stamina: ${stamina}
+Konsentrasi: ${konsentrasi}
+Perbaikan kesehatan: ${perbaikan}
+Perk. stamina: ${perkStamina}
+Perk. konsentrasi: ${perkKons}
+
+✍️ *CERITA PERKEMBANGAN*
+${cerita}
+
+🌿 *KESAN*
+${kesan}
+
+💡 *SARAN*
+${saran}
+
+---
+_Dikirim via Angket HTML Jagad Cilik_`;
+
+  // Nomor WA Romo — bisa diganti
+  const noWA = '6281234567890';
+  const url = `https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+function getSelected(grpId) {
+  const el = document.querySelector(`#${grpId} .selected-biru .option-text, #${grpId} .selected-hijau .option-text`);
+  if (!el) return null;
+  return el.textContent.replace(/⭐+\s*/,'').trim().split('\n')[0].trim();
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+buildSurvei();
+updateProgress();
+</script>
+</body>
+</html>
